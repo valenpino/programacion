@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operación: Programación — Sesión 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES ── */
+:root{
+  --bg:#080C14; --bg2:#0F1623; --bg3:#141D2E;
+  --navy:#1A2E55; --str:#1E4080;
+  --blue:#1D4ED8; --org:#EA580C; --grn:#16A34A;
+  --cyan:#0EA5E9; --red:#DC2626;
+  --wht:#FFFFFF; --off:#DDE4F0; --mut:#7A8BA0;
+  --mono:'Share Tech Mono',monospace;
+  --head:'Rajdhani',sans-serif;
+  --body:'Barlow',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--off);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,200,255,.018) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,200,255,.018) 40px);
+}
+
+/* ── HEADER ── */
+header{
+  background:linear-gradient(135deg,#0A1628,#0D1E35);
+  border-bottom:3px solid var(--org);padding:1.8rem 2rem 1.5rem;
+}
+.h-tag{
+  font-family:var(--mono);font-size:.65rem;color:var(--org);
+  letter-spacing:.15em;text-transform:uppercase;
+  background:rgba(234,88,12,.1);border:1px solid rgba(234,88,12,.3);
+  padding:.2rem .7rem;display:inline-block;margin-bottom:.6rem;
+}
+header h1{font-family:var(--head);font-size:2.1rem;font-weight:700;color:var(--wht);}
+header h1 span{color:var(--org);}
+.h-sub{font-family:var(--mono);font-size:.75rem;color:var(--mut);margin-top:.35rem;}
+.h-meta{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;}
+.chip{
+  font-family:var(--mono);font-size:.65rem;color:var(--cyan);
+  background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);padding:.2rem .62rem;
+}
+
+/* ── PROGRESS BAR ── */
+.prog-wrap{
+  background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.05);
+  padding:.5rem 2rem;display:flex;align-items:center;gap:.8rem;
+  position:sticky;top:0;z-index:100;
+}
+.prog-lbl{font-family:var(--mono);font-size:.63rem;color:var(--mut);white-space:nowrap;}
+.prog-out{flex:1;height:4px;background:rgba(255,255,255,.06);}
+.prog-in{height:4px;background:linear-gradient(90deg,var(--org),var(--cyan));width:0%;transition:width .4s;}
+.pts-d{font-family:var(--mono);font-size:.75rem;color:var(--org);white-space:nowrap;}
+
+/* ── MAIN LAYOUT ── */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.1),transparent);margin:2.6rem 0;}
+
+/* ── BLOQUE (teoría + actividad) ── */
+.bloque{margin-bottom:3rem;}
+.bloque-header{
+  display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.1rem;
+}
+.bloque-num{
+  font-family:var(--mono);font-size:.62rem;color:var(--org);
+  background:rgba(234,88,12,.12);border:1px solid rgba(234,88,12,.25);
+  padding:.18rem .55rem;white-space:nowrap;
+}
+.bloque h2{
+  font-family:var(--head);font-size:1.45rem;font-weight:700;
+  color:var(--wht);letter-spacing:.03em;
+}
+.bloque h2 span{color:var(--org);}
+
+/* ── TEORÍA ── */
+.teoria{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.07);
+  border-left:4px solid var(--cyan);
+  padding:1.2rem 1.4rem;margin-bottom:1.4rem;
+}
+.teoria-label{
+  font-family:var(--mono);font-size:.62rem;color:var(--cyan);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem;
+}
+
+/* Tarjeta de concepto inline */
+.concepto{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.concepto:last-child{border-bottom:none;padding-bottom:0;}
+.c-word{
+  font-family:var(--head);font-size:1rem;font-weight:700;
+  letter-spacing:.05em;min-width:7rem;flex-shrink:0;
+  padding:.2rem .5rem;text-align:center;
+}
+.c-word.w-prog{color:var(--org);background:rgba(234,88,12,.1);border:1px solid rgba(234,88,12,.25);}
+.c-word.w-cod {color:var(--cyan);background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);}
+.c-word.w-inst{color:#93BBFD;background:rgba(29,78,216,.1);border:1px solid rgba(29,78,216,.3);}
+.c-word.w-fn  {color:#86EFAC;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);}
+.c-body{}
+.c-def{font-size:.92rem;color:var(--off);margin-bottom:.3rem;}
+.c-ex{font-family:var(--mono);font-size:.75rem;color:var(--mut);}
+
+/* Tarjeta estructura HAZ·SI·REPITE */
+.struct-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:.5rem;}
+.sc{padding:.9rem;border:2px solid;text-align:center;}
+.sc.haz{border-color:rgba(29,78,216,.5);background:rgba(29,78,216,.05);}
+.sc.si {border-color:rgba(234,88,12,.5);background:rgba(234,88,12,.05);}
+.sc.rep{border-color:rgba(22,163,74,.5);background:rgba(22,163,74,.05);}
+.sc-kw{font-family:var(--head);font-size:1.7rem;font-weight:700;line-height:1;margin-bottom:.18rem;}
+.sc.haz .sc-kw{color:#93BBFD;}
+.sc.si  .sc-kw{color:#FDB980;}
+.sc.rep .sc-kw{color:#86EFAC;}
+.sc-sub{font-family:var(--mono);font-size:.62rem;color:var(--mut);margin-bottom:.4rem;}
+.sc-desc{font-size:.82rem;color:rgba(221,228,240,.78);}
+.sc-ex{
+  font-family:var(--mono);font-size:.72rem;margin-top:.4rem;
+  padding:.28rem .4rem;background:rgba(0,0,0,.25);
+}
+.sc.haz .sc-ex{color:#93BBFD;}
+.sc.si  .sc-ex{color:#FDB980;}
+.sc.rep .sc-ex{color:#86EFAC;}
+
+/* Proceso de programar */
+.proc-row{display:flex;gap:.4rem;align-items:stretch;margin-top:.5rem;}
+.pr{
+  flex:1;background:var(--bg3);border:1px solid rgba(255,255,255,.06);
+  padding:.6rem .4rem;text-align:center;
+}
+.pr-n{font-family:var(--mono);font-size:.6rem;color:var(--mut);}
+.pr-ic{font-size:1.3rem;margin:.15rem 0;}
+.pr-nm{font-family:var(--head);font-size:.8rem;font-weight:700;color:var(--wht);}
+.pr-ds{font-size:.7rem;color:var(--mut);margin-top:.1rem;}
+.pr-arr{display:flex;align-items:center;color:var(--mut);font-size:.9rem;flex-shrink:0;}
+
+/* ── ACTIVIDAD ── */
+.actividad{margin-top:.2rem;}
+.act-label{
+  display:inline-block;font-family:var(--mono);font-size:.62rem;
+  color:var(--org);letter-spacing:.12em;text-transform:uppercase;
+  border-top:2px solid var(--org);padding:.2rem 0 0;margin-bottom:.7rem;
+}
+.pts-note{color:var(--mut);font-size:.8rem;font-family:var(--mono);margin-left:.6rem;}
+
+/* ── TIPO A: "¿Cómo se llama esto?" ── */
+.qa-item{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.06);
+  padding:.9rem 1rem;margin-bottom:.55rem;
+}
+.qa-desc{
+  font-size:.9rem;color:var(--off);margin-bottom:.55rem;padding-left:.3rem;
+  border-left:3px solid rgba(255,255,255,.1);
+}
+.qa-desc em{color:var(--wht);font-style:normal;font-weight:600;}
+.qa-btns{display:flex;gap:.45rem;flex-wrap:wrap;}
+.qa-btn{
+  border:2px solid rgba(255,255,255,.12);padding:.3rem .85rem;
+  cursor:pointer;font-family:var(--head);font-weight:700;font-size:.88rem;
+  letter-spacing:.05em;background:rgba(255,255,255,.03);
+  color:var(--off);transition:all .14s;
+}
+.qa-btn:hover:not(:disabled):not(.qa-c):not(.qa-w){
+  border-color:var(--org);background:rgba(234,88,12,.1);color:var(--org);
+}
+.qa-btn:disabled{cursor:not-allowed;opacity:.5;}
+.qa-btn.qa-c{background:rgba(22,163,74,.18)!important;border-color:var(--grn)!important;color:var(--grn)!important;}
+.qa-btn.qa-w{background:rgba(220,38,38,.12)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.qa-btn.qa-rv{border-color:var(--grn)!important;color:var(--grn)!important;opacity:1!important;}
+
+/* ── TIPO B: Clasificar ── */
+.legend{display:flex;gap:.6rem;margin:.6rem 0 .9rem;flex-wrap:wrap;}
+.leg{
+  padding:.26rem .82rem;font-family:var(--head);
+  font-weight:700;font-size:.86rem;letter-spacing:.05em;
+}
+.leg.haz{background:var(--blue);color:var(--wht);}
+.leg.si {background:var(--org); color:var(--wht);}
+.leg.rep{background:var(--grn); color:var(--wht);}
+
+.cl-item{background:var(--bg2);border:1px solid rgba(255,255,255,.06);padding:.85rem 1rem;margin-bottom:.5rem;}
+.cl-inst{
+  font-family:var(--mono);font-size:.82rem;color:var(--cyan);
+  margin-bottom:.5rem;padding:.35rem .6rem;
+  background:rgba(14,165,233,.05);border-left:3px solid var(--cyan);
+}
+.cl-btns{display:flex;gap:.42rem;flex-wrap:wrap;}
+.cl-btn{
+  border:2px solid;padding:.28rem .82rem;cursor:pointer;
+  font-family:var(--head);font-weight:700;font-size:.85rem;
+  letter-spacing:.05em;background:transparent;transition:all .14s;
+}
+.cl-btn.haz{border-color:rgba(29,78,216,.5);color:#93BBFD;}
+.cl-btn.si {border-color:rgba(234,88,12,.5); color:#FDB980;}
+.cl-btn.rep{border-color:rgba(22,163,74,.5);  color:#86EFAC;}
+.cl-btn:hover:not(:disabled).haz{background:rgba(29,78,216,.15);}
+.cl-btn:hover:not(:disabled).si {background:rgba(234,88,12,.15);}
+.cl-btn:hover:not(:disabled).rep{background:rgba(22,163,74,.15);}
+.cl-btn:disabled{cursor:not-allowed;opacity:.5;}
+.cl-btn.c-sel{background:rgba(22,163,74,.18)!important;border-color:var(--grn)!important;color:var(--grn)!important;}
+.cl-btn.w-sel{background:rgba(220,38,38,.12)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.cl-btn.reveal{border-color:var(--grn)!important;color:var(--grn)!important;opacity:1!important;}
+
+/* ── TIPO C: Quiz analizar ── */
+.pseudo{
+  background:#050D1A;border:1px solid var(--navy);
+  padding:1rem 1.3rem;margin:.8rem 0;font-family:var(--mono);
+  font-size:.86rem;line-height:2;
+}
+.ph{color:#93BBFD;} .ps{color:#FDB980;} .pr2{color:#86EFAC;}
+.pc{color:var(--mut);font-size:.76rem;}
+.pi{margin-left:1.5rem;display:block;}
+
+.quiz-q{margin-bottom:1.25rem;}
+.quiz-q p{font-weight:600;color:var(--wht);margin-bottom:.48rem;font-size:.93rem;}
+.opts{display:flex;flex-direction:column;gap:.38rem;}
+.opt{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  color:var(--off);padding:.52rem .88rem;text-align:left;cursor:pointer;
+  font-size:.88rem;transition:all .14s;width:100%;font-family:var(--body);
+}
+.opt:hover:not(:disabled){background:rgba(234,88,12,.07);border-color:rgba(234,88,12,.28);}
+.opt:disabled{cursor:not-allowed;}
+.opt.correct{background:rgba(22,163,74,.14);border-color:var(--grn);color:var(--grn);}
+.opt.wrong  {background:rgba(220,38,38,.1); border-color:var(--red);color:var(--red);}
+
+/* ── FEEDBACK ── */
+.fb{font-family:var(--mono);font-size:.73rem;margin-top:.42rem;padding:.35rem .55rem;display:none;}
+.fb.show{display:block;}
+.fb.ok  {color:var(--grn);background:rgba(22,163,74,.08);border-left:3px solid var(--grn);}
+.fb.fail{color:var(--red);background:rgba(220,38,38,.08);border-left:3px solid var(--red);}
+
+/* ── TIPO D: Construir / elegir ── */
+.build-goal{
+  background:var(--bg2);border-left:4px solid var(--org);
+  padding:.85rem 1.1rem;margin:.8rem 0;
+}
+.build-goal strong{color:var(--org);}
+.build-goal p{font-size:.9rem;margin-top:.28rem;}
+
+.bs{background:var(--bg3);border:1px solid rgba(255,255,255,.06);
+  padding:.9rem 1rem;margin-bottom:.6rem;}
+.bs-lbl{font-family:var(--mono);font-size:.62rem;color:var(--mut);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.32rem;}
+.bs-q{font-size:.88rem;color:var(--off);margin-bottom:.52rem;}
+.bs-opts{display:flex;gap:.42rem;flex-wrap:wrap;}
+.bs-opt{
+  border:2px solid rgba(255,255,255,.1);padding:.3rem .78rem;
+  cursor:pointer;font-family:var(--mono);font-size:.77rem;
+  background:rgba(255,255,255,.03);color:var(--off);transition:all .13s;
+}
+.bs-opt:hover:not(:disabled):not(.bs-c):not(.bs-w){border-color:var(--cyan);background:rgba(14,165,233,.07);}
+.bs-opt:disabled{cursor:not-allowed;opacity:.5;}
+.bs-opt.bs-c {border-color:var(--grn)!important;background:rgba(22,163,74,.18)!important;color:var(--grn)!important;}
+.bs-opt.bs-w {border-color:var(--red)!important;background:rgba(220,38,38,.1)!important;color:var(--red)!important;}
+.bs-opt.bs-rv{border-color:var(--grn)!important;color:var(--grn)!important;opacity:1!important;}
+
+/* ── RESULTADO FINAL ── */
+.result-box{
+  background:linear-gradient(135deg,rgba(234,88,12,.08),rgba(14,165,233,.05));
+  border:2px solid var(--org);padding:2rem;text-align:center;
+  margin:2rem 0;display:none;
+}
+.result-box.show{display:block;animation:fadeUp .4s ease both;}
+.r-pts{font-family:var(--head);font-size:3.2rem;font-weight:700;color:var(--org);line-height:1;}
+.r-max{font-family:var(--mono);font-size:.75rem;color:var(--mut);margin-top:.2rem;}
+.r-msg{font-family:var(--head);font-size:1.05rem;color:var(--wht);margin-top:.7rem;}
+.r-det{font-family:var(--mono);font-size:.72rem;color:var(--mut);margin-top:.32rem;}
+
+.final-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+.final-btn{
+  background:transparent;border:2px solid;
+  font-family:var(--head);font-weight:700;font-size:.93rem;
+  letter-spacing:.08em;padding:.58rem 1.8rem;cursor:pointer;
+  transition:all .2s;text-transform:uppercase;
+}
+.final-btn.orange{border-color:var(--org);color:var(--org);}
+.final-btn.orange:hover{background:rgba(234,88,12,.12);}
+.final-btn.cyan{border-color:var(--cyan);color:var(--cyan);}
+.final-btn.cyan:hover{background:rgba(14,165,233,.1);}
+
+/* ══════════════════════════════
+   PDF / PRINT STYLES
+══════════════════════════════ */
+#print-zone{display:none;}
+
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  body>*:not(#print-zone){display:none!important;}
+  #print-zone{
+    display:block!important;
+    font-family:Arial,sans-serif;
+    font-size:12pt;color:#000;background:#fff;
+    padding:1.5cm 2cm;
+  }
+  .pz-header{border-bottom:3px solid #EA580C;padding-bottom:10px;margin-bottom:20px;}
+  .pz-title{font-size:18pt;font-weight:700;color:#EA580C;}
+  .pz-sub{font-size:9pt;color:#555;margin-top:3px;}
+  .pz-intro{
+    background:#FFF3EB;border-left:4px solid #EA580C;
+    padding:8px 12px;margin:16px 0;font-size:10pt;color:#333;
+  }
+  .pz-section{margin-bottom:18px;}
+  .pz-sec-title{
+    font-size:11pt;font-weight:700;color:#1A2E55;
+    border-bottom:1px solid #ddd;padding-bottom:4px;margin-bottom:8px;
+  }
+  .pz-error{
+    background:#FFF8F0;border:1px solid #FDB980;
+    padding:8px 12px;margin-bottom:8px;page-break-inside:avoid;
+  }
+  .pz-q{font-size:10pt;font-weight:600;color:#333;margin-bottom:4px;}
+  .pz-correct{font-size:10pt;color:#16A34A;font-weight:600;}
+  .pz-explain{font-size:9pt;color:#555;margin-top:3px;}
+  .pz-no-errors{
+    background:#F0FFF4;border:1px solid #86EFAC;
+    padding:10px 14px;color:#16A34A;font-weight:600;text-align:center;
+  }
+  .pz-footer{
+    border-top:1px solid #ddd;padding-top:8px;
+    font-size:8pt;color:#888;text-align:center;margin-top:20px;
+  }
+}
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ── PROCESO SLOTS ── */
+.proc-card{
+  background:var(--bg2);border:2px solid rgba(255,255,255,.1);
+  padding:.7rem 1rem;cursor:pointer;transition:all .15s;
+  font-size:.88rem;color:var(--off);user-select:none;
+}
+.proc-card:hover:not(.pc-used){border-color:var(--org);background:rgba(234,88,12,.08);}
+.proc-card.pc-selected{border-color:var(--org);background:rgba(234,88,12,.15);}
+.proc-card.pc-used{opacity:.35;cursor:not-allowed;}
+
+.proc-slot{
+  background:var(--bg3);border:2px dashed rgba(255,255,255,.1);
+  padding:.65rem 1rem;transition:all .15s;cursor:pointer;
+}
+.proc-slot:hover:not(.ps-filled):not(.ps-locked){border-color:var(--cyan);border-style:solid;}
+.proc-slot.ps-filled{cursor:default;}
+.proc-slot.ps-correct{border-color:var(--grn)!important;border-style:solid!important;}
+.proc-slot.ps-wrong  {border-color:var(--red)!important;border-style:solid!important;animation:shake .3s ease;}
+.proc-slot.ps-locked {cursor:default;}
+.ps-header{display:flex;align-items:center;gap:.6rem;}
+.ps-icon{font-size:1.2rem;}
+.ps-name{font-family:var(--head);font-size:.9rem;font-weight:700;color:var(--wht);letter-spacing:.04em;}
+.ps-hint{font-family:var(--mono);font-size:.65rem;color:var(--mut);margin-left:auto;}
+.ps-content{font-size:.84rem;color:var(--off);margin-top:.45rem;padding-top:.45rem;
+  border-top:1px solid rgba(255,255,255,.06);display:none;}
+
+@media(max-width:560px){
+  .struct-row{grid-template-columns:1fr;}
+  .proc-row{flex-direction:column;}
+  .pr-arr{display:none;}
+  header h1{font-size:1.65rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="h-tag">▶ SESIÓN 1 · 2º ESO · TECNOLOGÍA Y DIGITALIZACIÓN</div>
+  <h1>⚙️ Operación: <span>Programación</span></h1>
+  <p class="h-sub">// comprueba lo que has aprendido hoy · ~15 min</p>
+  <div class="h-meta">
+    <span class="chip">⏱ ~15 min</span>
+    <span class="chip">👤 Individual</span>
+  </div>
+</header>
+
+<!-- PROGRESO -->
+<div class="prog-wrap">
+  <span class="prog-lbl">PROGRESO:</span>
+  <div class="prog-out"><div class="prog-in" id="progBar"></div></div>
+  <span class="pts-d">⬡ <span id="ptsCount">0</span> pts</span>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     BLOQUE 1 — ¿Qué es programar?
+══════════════════════════════════════ -->
+<div class="bloque">
+  <div class="bloque-header">
+    <span class="bloque-num">BLOQUE 01</span>
+    <h2>¿Qué es <span>programar</span>?</h2>
+  </div>
+
+  <!-- TEORÍA -->
+  <div class="teoria">
+    <div class="teoria-label">📖 Recuerda</div>
+
+    <div class="concepto">
+      <div class="c-word w-inst">INSTRUCCIÓN</div>
+      <div class="c-body">
+        <div class="c-def">Una orden concreta y exacta que le das a la máquina. La sigue tal cual — sin inventarse nada.</div>
+        <div class="c-ex">Ej: "Avanza 3m · gira 90° · deposita la caja"</div>
+      </div>
+    </div>
+
+    <div class="concepto">
+      <div class="c-word w-cod">CÓDIGO</div>
+      <div class="c-body">
+        <div class="c-def">El idioma de las máquinas. Igual que tú hablas español, las máquinas entienden código — bloques, Python, JavaScript...</div>
+        <div class="c-ex">Ej: los bloques de MakeCode son código visual</div>
+      </div>
+    </div>
+
+    <div class="concepto">
+      <div class="c-word w-prog">PROGRAMA</div>
+      <div class="c-body">
+        <div class="c-def">Lo que lee la máquina para saber qué tiene que hacer. Sin programa, la máquina no hace nada.</div>
+        <div class="c-ex">Ej: la app del móvil, el programa del semáforo, el GPS</div>
+      </div>
+    </div>
+
+    <div class="concepto">
+      <div class="c-word w-fn">FUNCIÓN</div>
+      <div class="c-body">
+        <div class="c-def">Cada máquina tiene sus propios HAZ — y tiene muchos. El semáforo sabe encender rojo, verde y ámbar. El robot sabe mover el brazo, girar la pinza, avanzar... Cada uno de esos es una función.</div>
+        <div class="c-ex">Robot → mover brazo · girar pinza · avanzar &nbsp;·&nbsp; Semáforo → encender verde · encender rojo · encender ámbar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD 1 -->
+  <div class="actividad">
+    <div class="act-label">✏️ Actividad 1 — ¿Cómo se llama? <span class="pts-note">+3 pts cada acierto</span></div>
+    <p style="font-size:.9rem;color:rgba(221,228,240,.75);margin-bottom:.9rem;">Lee la descripción y elige qué concepto es.</p>
+
+    <!-- qa1 -->
+    <div class="qa-item" id="qa1">
+      <div class="qa-desc">El conjunto de instrucciones del semáforo, escritas en el idioma de la máquina y guardadas en su chip, es un... <em>¿qué?</em></div>
+      <div class="qa-btns">
+        <button class="qa-btn" onclick="qa(this,'qa1','PROGRAMA')">INSTRUCCIÓN</button>
+        <button class="qa-btn" onclick="qa(this,'qa1','PROGRAMA')">CÓDIGO</button>
+        <button class="qa-btn" onclick="qa(this,'qa1','PROGRAMA')">PROGRAMA</button>
+        <button class="qa-btn" onclick="qa(this,'qa1','PROGRAMA')">FUNCIÓN</button>
+      </div>
+      <div class="fb" id="qa1-fb"></div>
+    </div>
+
+    <!-- qa2 -->
+    <div class="qa-item" id="qa2">
+      <div class="qa-desc">"Avanza 3 metros, gira 90 grados, deposita la caja" — cada una de estas órdenes es una... <em>¿qué?</em></div>
+      <div class="qa-btns">
+        <button class="qa-btn" onclick="qa(this,'qa2','INSTRUCCIÓN')">INSTRUCCIÓN</button>
+        <button class="qa-btn" onclick="qa(this,'qa2','INSTRUCCIÓN')">CÓDIGO</button>
+        <button class="qa-btn" onclick="qa(this,'qa2','INSTRUCCIÓN')">PROGRAMA</button>
+        <button class="qa-btn" onclick="qa(this,'qa2','INSTRUCCIÓN')">FUNCIÓN</button>
+      </div>
+      <div class="fb" id="qa2-fb"></div>
+    </div>
+
+    <!-- qa3 -->
+    <div class="qa-item" id="qa3">
+      <div class="qa-desc">Los bloques de colores de MakeCode — el idioma visual que usaremos para escribir instrucciones — son... <em>¿qué?</em></div>
+      <div class="qa-btns">
+        <button class="qa-btn" onclick="qa(this,'qa3','CÓDIGO')">INSTRUCCIÓN</button>
+        <button class="qa-btn" onclick="qa(this,'qa3','CÓDIGO')">CÓDIGO</button>
+        <button class="qa-btn" onclick="qa(this,'qa3','CÓDIGO')">PROGRAMA</button>
+        <button class="qa-btn" onclick="qa(this,'qa3','CÓDIGO')">FUNCIÓN</button>
+      </div>
+      <div class="fb" id="qa3-fb"></div>
+    </div>
+
+    <!-- qa4 -->
+    <div class="qa-item" id="qa4">
+      <div class="qa-desc">"Encender verde" es lo que hace el semáforo. "Mover brazo" es lo que hace el robot. Estas instrucciones propias de cada dispositivo se llaman... <em>¿qué?</em></div>
+      <div class="qa-btns">
+        <button class="qa-btn" onclick="qa(this,'qa4','FUNCIÓN')">INSTRUCCIÓN</button>
+        <button class="qa-btn" onclick="qa(this,'qa4','FUNCIÓN')">CÓDIGO</button>
+        <button class="qa-btn" onclick="qa(this,'qa4','FUNCIÓN')">PROGRAMA</button>
+        <button class="qa-btn" onclick="qa(this,'qa4','FUNCIÓN')">FUNCIÓN</button>
+      </div>
+      <div class="fb" id="qa4-fb"></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════
+     BLOQUE 2 — HAZ · SI · REPITE
+══════════════════════════════════════ -->
+<div class="bloque">
+  <div class="bloque-header">
+    <span class="bloque-num">BLOQUE 02</span>
+    <h2>Las 3 estructuras: <span>HAZ · SI · REPITE</span></h2>
+  </div>
+
+  <!-- TEORÍA -->
+  <div class="teoria">
+    <div class="teoria-label">📖 Recuerda</div>
+    <div class="struct-row">
+      <div class="sc haz">
+        <div class="sc-kw">HAZ</div>
+        <div class="sc-sub">= Acción</div>
+        <div class="sc-desc">Una instrucción directa. Se ejecuta siempre, en orden.</div>
+        <div class="sc-ex">Pon la luz en rojo<br>Espera 30 segundos</div>
+      </div>
+      <div class="sc si">
+        <div class="sc-kw">SI</div>
+        <div class="sc-sub">= Condicional</div>
+        <div class="sc-desc">Hay una condición. Lo que hace depende de si se cumple o no.</div>
+        <div class="sc-ex">¿Hay caja? →<br>cógela · si no, avanza</div>
+      </div>
+      <div class="sc rep">
+        <div class="sc-kw">REPITE</div>
+        <div class="sc-sub">= Bucle</div>
+        <div class="sc-desc">Repite las instrucciones sin parar, una y otra vez.</div>
+        <div class="sc-ex">El ciclo verde → ámbar → rojo<br>sin parar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD 2 -->
+  <div class="actividad">
+    <div class="act-label">✏️ Actividad 2 — Clasifica cada instrucción <span class="pts-note">+4 pts cada acierto</span></div>
+    <p style="font-size:.9rem;color:rgba(221,228,240,.75);margin-bottom:.7rem;">Usa los ejemplos del semáforo, el robot y el exprimidor que vimos en clase.</p>
+
+    <div class="legend">
+      <span class="leg haz">HAZ = acción</span>
+      <span class="leg si">SI = condicional</span>
+      <span class="leg rep">REPITE = bucle</span>
+    </div>
+
+    <div class="cl-item" id="ci1">
+      <div class="cl-inst">🚦 "Pon la luz en rojo"</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci1','haz')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci1','haz')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci1','haz')">REPITE</button>
+      </div>
+      <div class="fb" id="ci1-fb"></div>
+    </div>
+
+    <div class="cl-item" id="ci2">
+      <div class="cl-inst">🚦 "El semáforo va cambiando: verde 30s → ámbar 3s → rojo 30s → verde 30s → ámbar 3s → rojo 30s → ..."</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci2','rep')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci2','rep')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci2','rep')">REPITE</button>
+      </div>
+      <div class="fb" id="ci2-fb"></div>
+    </div>
+
+    <div class="cl-item" id="ci3">
+      <div class="cl-inst">🚦 "Cuando es de noche el semáforo se queda en rojo fijo; de día hace el ciclo normal"</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci3','si')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci3','si')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci3','si')">REPITE</button>
+      </div>
+      <div class="fb" id="ci3-fb"></div>
+    </div>
+
+    <div class="cl-item" id="ci4">
+      <div class="cl-inst">🤖 "Mueve el brazo a posición inicial"</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci4','haz')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci4','haz')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci4','haz')">REPITE</button>
+      </div>
+      <div class="fb" id="ci4-fb"></div>
+    </div>
+
+    <div class="cl-item" id="ci5">
+      <div class="cl-inst">🤖 "El sensor detecta caja → la coge. No hay caja → avanza 10cm"</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci5','si')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci5','si')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci5','si')">REPITE</button>
+      </div>
+      <div class="fb" id="ci5-fb"></div>
+    </div>
+
+    <div class="cl-item" id="ci6">
+      <div class="cl-inst">🍊 "El exprimidor va apretando la naranja una y otra vez hasta que no queda zumo"</div>
+      <div class="cl-btns">
+        <button class="cl-btn haz" onclick="classify(this,'ci6','rep')">HAZ</button>
+        <button class="cl-btn si"  onclick="classify(this,'ci6','rep')">SI</button>
+        <button class="cl-btn rep" onclick="classify(this,'ci6','rep')">REPITE</button>
+      </div>
+      <div class="fb" id="ci6-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════
+     BLOQUE 3 — Analizar un programa
+══════════════════════════════════════ -->
+<div class="bloque">
+  <div class="bloque-header">
+    <span class="bloque-num">BLOQUE 03</span>
+    <h2>Analiza un <span>programa</span></h2>
+  </div>
+
+  <!-- TEORÍA: chef + 5 bloques del proceso -->
+  <div class="teoria">
+    <div class="teoria-label">📖 Recuerda — Programar es como cocinar</div>
+
+    <div style="display:flex;gap:1.1rem;align-items:flex-start;padding:.5rem 0 1rem;">
+      <div style="font-size:2.6rem;flex-shrink:0;line-height:1;">👨‍🍳</div>
+      <div style="font-size:.9rem;color:rgba(221,228,240,.82);line-height:1.75;">
+        Un chef no empieza a cocinar sin más. Primero <strong style="color:var(--wht);">decide qué quiere hacer</strong>, luego <strong style="color:var(--wht);">escribe la receta</strong> paso a paso, después <strong style="color:var(--wht);">la prepara</strong>, la <strong style="color:var(--wht);">prueba</strong> y si algo no está bien, la <strong style="color:var(--wht);">ajusta</strong>.
+        <br><span style="color:var(--cyan);">Programar funciona exactamente igual — siempre en este orden:</span>
+      </div>
+    </div>
+
+    <div class="proc-row">
+      <div class="pr"><div class="pr-n">01</div><div class="pr-ic">🤔</div><div class="pr-nm">PROBLEMA</div><div class="pr-ds">¿Qué quiero que haga?</div></div>
+      <div class="pr-arr">→</div>
+      <div class="pr"><div class="pr-n">02</div><div class="pr-ic">📝</div><div class="pr-nm">PLANIFICA</div><div class="pr-ds">Escribe los pasos</div></div>
+      <div class="pr-arr">→</div>
+      <div class="pr"><div class="pr-n">03</div><div class="pr-ic">💻</div><div class="pr-nm">ESCRIBE</div><div class="pr-ds">Tradúcelo al editor</div></div>
+      <div class="pr-arr">→</div>
+      <div class="pr"><div class="pr-n">04</div><div class="pr-ic">▶️</div><div class="pr-nm">PRUEBA</div><div class="pr-ds">Ejecútalo y observa</div></div>
+      <div class="pr-arr">→</div>
+      <div class="pr"><div class="pr-n">05</div><div class="pr-ic">🔧</div><div class="pr-nm">MEJORA</div><div class="pr-ds">Corrige y repite</div></div>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD 3a — Coloca cada descripción en su paso -->
+  <div class="actividad">
+    <div class="act-label">✏️ Actividad 3a — ¿En qué paso va cada cosa? <span class="pts-note">+2 pts cada acierto</span></div>
+    <p style="font-size:.9rem;color:rgba(221,228,240,.75);margin-bottom:1rem;">
+      Alguien siguió los 5 pasos para crear el programa del semáforo. Lee cada descripción y pulsa el paso al que corresponde.
+    </p>
+
+    <!-- Tarjetas mezcladas para colocar -->
+    <div id="proc-cards" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem;"></div>
+
+    <!-- 5 slots -->
+    <div style="display:flex;flex-direction:column;gap:.5rem;" id="proc-slots">
+      <div class="proc-slot" id="ps-1" data-step="1" onclick="placeProc(1)">
+        <div class="ps-header">
+          <span class="ps-icon">🤔</span>
+          <span class="ps-name">01 · PROBLEMA</span>
+          <span class="ps-hint">¿Qué quiero que haga?</span>
+        </div>
+        <div class="ps-content" id="ps-1-content"></div>
+      </div>
+      <div class="proc-slot" id="ps-2" data-step="2" onclick="placeProc(2)">
+        <div class="ps-header">
+          <span class="ps-icon">📝</span>
+          <span class="ps-name">02 · PLANIFICA</span>
+          <span class="ps-hint">Escribe los pasos</span>
+        </div>
+        <div class="ps-content" id="ps-2-content"></div>
+      </div>
+      <div class="proc-slot" id="ps-3" data-step="3" onclick="placeProc(3)">
+        <div class="ps-header">
+          <span class="ps-icon">💻</span>
+          <span class="ps-name">03 · ESCRIBE</span>
+          <span class="ps-hint">Tradúcelo al editor</span>
+        </div>
+        <div class="ps-content" id="ps-3-content"></div>
+      </div>
+      <div class="proc-slot" id="ps-4" data-step="4" onclick="placeProc(4)">
+        <div class="ps-header">
+          <span class="ps-icon">▶️</span>
+          <span class="ps-name">04 · PRUEBA</span>
+          <span class="ps-hint">Ejecútalo y observa</span>
+        </div>
+        <div class="ps-content" id="ps-4-content"></div>
+      </div>
+      <div class="proc-slot" id="ps-5" data-step="5" onclick="placeProc(5)">
+        <div class="ps-header">
+          <span class="ps-icon">🔧</span>
+          <span class="ps-name">05 · MEJORA</span>
+          <span class="ps-hint">Corrige y repite</span>
+        </div>
+        <div class="ps-content" id="ps-5-content"></div>
+      </div>
+    </div>
+    <div class="fb" id="proc-fb" style="margin-top:.6rem;"></div>
+  </div>
+
+  <!-- ACTIVIDAD 3b — Analiza el programa -->
+  <div class="actividad" style="margin-top:2rem;">
+    <div class="act-label">✏️ Actividad 3b — Analiza el código <span class="pts-note">+5 pts cada acierto</span></div>
+    <p style="font-size:.9rem;color:rgba(221,228,240,.75);margin-bottom:.8rem;">
+      Aquí está el resultado de aplicar esos 5 pasos. Léelo y responde.
+    </p>
+
+    <div class="pseudo">
+      <span class="pc">// Al encender el semáforo</span><br>
+      <span class="ph">HAZ: comprueba si es de día o de noche</span><br>
+      <br>
+      <span class="pc">// Funciona sin parar</span><br>
+      <span class="pr2">REPITE siempre:</span><br>
+      <span class="pi ps">SI es de noche →</span>
+      <span class="pi" style="margin-left:3rem"><span class="ph">HAZ: pon rojo fijo</span></span>
+      <span class="pi ps">SI es de día →</span>
+      <span class="pi" style="margin-left:3rem"><span class="ph">HAZ: pon verde · espera 30s</span></span>
+      <span class="pi" style="margin-left:3rem"><span class="ph">HAZ: pon ámbar · espera 3s</span></span>
+      <span class="pi" style="margin-left:3rem"><span class="ph">HAZ: pon rojo · espera 30s</span></span>
+    </div>
+
+    <div class="quiz-q">
+      <p>1. ¿Qué estructura hace que el semáforo no se detenga nunca?</p>
+      <div class="opts">
+        <button class="opt" onclick="quiz(this,'wrong','q1')">HAZ — porque ejecuta las instrucciones directamente</button>
+        <button class="opt" onclick="quiz(this,'wrong','q1')">SI — porque comprueba si es de día o de noche</button>
+        <button class="opt" onclick="quiz(this,'correct','q1')">REPITE — porque repite el ciclo indefinidamente</button>
+      </div>
+      <div class="fb" id="q1-fb"></div>
+    </div>
+
+    <div class="quiz-q">
+      <p>2. Si es de noche, ¿cuántas instrucciones HAZ se ejecutan?</p>
+      <div class="opts">
+        <button class="opt" onclick="quiz(this,'correct','q2')">1 — solo "pon rojo fijo"</button>
+        <button class="opt" onclick="quiz(this,'wrong','q2')">3 — verde, ámbar y rojo</button>
+        <button class="opt" onclick="quiz(this,'wrong','q2')">4 — todas las del programa</button>
+      </div>
+      <div class="fb" id="q2-fb"></div>
+    </div>
+
+    <div class="quiz-q">
+      <p>3. ¿Por qué hay un SI en vez de poner siempre el ciclo verde → ámbar → rojo?</p>
+      <div class="opts">
+        <button class="opt" onclick="quiz(this,'wrong','q3')">Porque el semáforo no puede funcionar sin una condición</button>
+        <button class="opt" onclick="quiz(this,'correct','q3')">Porque lo que hace cambia según si es de día o de noche — hay que tomar una decisión</button>
+        <button class="opt" onclick="quiz(this,'wrong','q3')">Porque el REPITE necesita un SI dentro para funcionar</button>
+      </div>
+      <div class="fb" id="q3-fb"></div>
+    </div>
+
+    <div class="quiz-q">
+      <p>4. ¿Qué pasaría si quitamos el REPITE y dejamos solo el SI?</p>
+      <div class="opts">
+        <button class="opt" onclick="quiz(this,'wrong','q4')">El semáforo funcionaría igual, el REPITE no cambia nada</button>
+        <button class="opt" onclick="quiz(this,'wrong','q4')">El semáforo haría el ciclo más rápido</button>
+        <button class="opt" onclick="quiz(this,'correct','q4')">El semáforo haría el ciclo una sola vez y se pararía para siempre</button>
+      </div>
+      <div class="fb" id="q4-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════
+     BLOQUE 4 — Construye un programa
+══════════════════════════════════════ -->
+<div class="bloque">
+  <div class="bloque-header">
+    <span class="bloque-num">BLOQUE 04</span>
+    <h2>Elige las instrucciones <span>correctas</span></h2>
+  </div>
+
+  <!-- sin teoría nueva — aplican lo que saben -->
+
+  <!-- ACTIVIDAD 4 -->
+  <div class="actividad">
+    <div class="act-label">✏️ Actividad 4 — Diseña el programa <span class="pts-note">+5 pts cada acierto</span></div>
+    <p style="font-size:.9rem;color:rgba(221,228,240,.75);margin-bottom:.8rem;">Ahora diseñas tú. Elige qué estructura corresponde a cada parte del programa.</p>
+
+    <div class="build-goal">
+      <strong>🎯 Escenario: puerta automática del súper</strong>
+      <p>La puerta del supermercado se abre sola cuando alguien se acerca. Funciona todo el día, sin apagarse. Tiene un sensor que detecta si hay alguien delante.</p>
+    </div>
+
+    <div class="bs" id="bp1">
+      <div class="bs-lbl">PARTE 1 — La puerta nunca se apaga</div>
+      <div class="bs-q">¿Qué estructura hace que la puerta esté siempre activa, comprobando si alguien se acerca?</div>
+      <div class="bs-opts">
+        <button class="bs-opt" onclick="build(this,'bp1','a')">A) HAZ — ejecuta una instrucción directa</button>
+        <button class="bs-opt" onclick="build(this,'bp1','b')">B) SI — comprueba si hay alguien</button>
+        <button class="bs-opt" onclick="build(this,'bp1','c')">C) REPITE — funciona sin parar todo el día</button>
+      </div>
+      <div class="fb" id="bp1-fb"></div>
+    </div>
+
+    <div class="bs" id="bp2">
+      <div class="bs-lbl">PARTE 2 — Detectar si alguien se acerca</div>
+      <div class="bs-q">El sensor detecta a alguien → abre la puerta. De lo contrario → mantén cerrada. ¿Qué estructura es esta?</div>
+      <div class="bs-opts">
+        <button class="bs-opt" onclick="build(this,'bp2','a')">A) HAZ — abrir la puerta directamente</button>
+        <button class="bs-opt" onclick="build(this,'bp2','b')">B) SI — la acción depende del sensor</button>
+        <button class="bs-opt" onclick="build(this,'bp2','c')">C) REPITE — repetir la apertura</button>
+      </div>
+      <div class="fb" id="bp2-fb"></div>
+    </div>
+
+    <div class="bs" id="bp3">
+      <div class="bs-lbl">PARTE 3 — Abrir la puerta</div>
+      <div class="bs-q">"Activa el motor y desliza la puerta" — es la instrucción concreta del dispositivo. ¿Qué tipo de instrucción es?</div>
+      <div class="bs-opts">
+        <button class="bs-opt" onclick="build(this,'bp3','a')">A) HAZ — instrucción directa del dispositivo (función)</button>
+        <button class="bs-opt" onclick="build(this,'bp3','b')">B) SI — depende de si la puerta está cerrada</button>
+        <button class="bs-opt" onclick="build(this,'bp3','c')">C) REPITE — la puerta se abre varias veces</button>
+      </div>
+      <div class="fb" id="bp3-fb"></div>
+    </div>
+
+    <div class="bs" id="bp4">
+      <div class="bs-lbl">PARTE 4 — Detectar un incendio</div>
+      <div class="bs-q">El programador añade una mejora: si el sensor de humo detecta fuego, la puerta se abre automáticamente para evacuar. ¿Qué estructura es esta nueva función?</div>
+      <div class="bs-opts">
+        <button class="bs-opt" onclick="build(this,'bp4','a')">A) HAZ — abre la puerta directamente sin condición</button>
+        <button class="bs-opt" onclick="build(this,'bp4','b')">B) SI — la acción depende de si hay humo o no</button>
+        <button class="bs-opt" onclick="build(this,'bp4','c')">C) REPITE — repite la comprobación del sensor</button>
+      </div>
+      <div class="fb" id="bp4-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="divider"></div>
+
+<!-- CIERRE: LA PROGRAMACIÓN ESTÁ EN TODAS PARTES -->
+<div style="background:#0F1623;border:2px solid #1A2E55;padding:1.8rem 1.5rem;margin-bottom:1.5rem;">
+  <div style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:#0EA5E9;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.8rem;">// misión completada</div>
+
+  <div style="font-family:'Rajdhani',sans-serif;font-size:1.6rem;font-weight:700;color:#FFFFFF;line-height:1.2;margin-bottom:1rem;">
+    La programación está<br><span style="color:#EA580C;">en todas partes.</span>
+  </div>
+
+  <p style="font-size:.95rem;color:rgba(221,228,240,.8);line-height:1.7;margin-bottom:1.2rem;">
+    El semáforo que esperas al salir de clase. El algoritmo que elige el siguiente vídeo en YouTube. El GPS que te dice por dónde ir. El sensor que enciende la luz cuando entras al baño. El airbag que sabe exactamente cuándo inflarse.
+  </p>
+  <p style="font-size:.95rem;color:rgba(221,228,240,.8);line-height:1.7;margin-bottom:1.4rem;">
+    Todos esos sistemas fueron escritos por personas que aprendieron lo mismo que tú has empezado hoy: <strong style="color:#FFFFFF;">instrucciones, código, programas y las 3 estructuras que los hacen funcionar.</strong>
+  </p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.6rem;">
+    <div style="background:#141D2E;border-left:3px solid #1D4ED8;padding:.75rem .9rem;">
+      <div style="font-size:1.4rem;margin-bottom:.3rem;">🚗</div>
+      <div style="font-size:.82rem;color:#FFFFFF;font-weight:700;">Coche autónomo</div>
+      <div style="font-size:.78rem;color:#7A8BA0;">Frena antes de que tú reacciones</div>
+    </div>
+    <div style="background:#141D2E;border-left:3px solid #EA580C;padding:.75rem .9rem;">
+      <div style="font-size:1.4rem;margin-bottom:.3rem;">🏥</div>
+      <div style="font-size:.82rem;color:#FFFFFF;font-weight:700;">Escáner médico</div>
+      <div style="font-size:.78rem;color:#7A8BA0;">Reconstruye imágenes del interior de tu cuerpo</div>
+    </div>
+    <div style="background:#141D2E;border-left:3px solid #16A34A;padding:.75rem .9rem;">
+      <div style="font-size:1.4rem;margin-bottom:.3rem;">🛰️</div>
+      <div style="font-size:.82rem;color:#FFFFFF;font-weight:700;">Satélite GPS</div>
+      <div style="font-size:.78rem;color:#7A8BA0;">Calcula tu posición con precisión de metros</div>
+    </div>
+  </div>
+
+  <!-- Pregunta final SI / NO -->
+  <div style="border:2px solid #EA580C;padding:1.2rem 1.4rem;text-align:center;">
+    <div style="font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:700;color:#FFFFFF;margin-bottom:1rem;">
+      ¿Quieres aprender a programar todo esto?
+    </div>
+    <div style="display:flex;gap:1rem;justify-content:center;">
+      <button onclick="cierre('si')" id="cBtn-si" style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;padding:.6rem 2.2rem;background:#16A34A;border:none;color:#fff;cursor:pointer;border-radius:2px;">
+        SÍ 🚀
+      </button>
+      <button onclick="cierre('no')" id="cBtn-no" style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;padding:.6rem 2.2rem;background:#141D2E;border:2px solid #7A8BA0;color:#7A8BA0;cursor:pointer;border-radius:2px;">
+        NO
+      </button>
+    </div>
+    <div id="cierre-fb" style="margin-top:1rem;font-size:.95rem;display:none;"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<!-- RESULTADO FINAL -->
+<div class="result-box" id="resultBox">
+  <div class="r-pts" id="rPts">0 pts</div>
+  <div class="r-max" id="rMax"></div>
+  <div class="r-msg" id="rMsg"></div>
+  <div class="r-det" id="rDet"></div>
+  <div class="final-row"></div>
+</div>
+<div class="final-row" style="margin-top:1.5rem;">
+  <button class="final-btn orange" onclick="showResult()">VER MI RESULTADO FINAL</button>
+</div>
+
+</main>
+
+<!-- ══════════════════════════════════════
+     ZONA DE IMPRESIÓN (solo visible al imprimir)
+══════════════════════════════════════ -->
+<div id="print-zone"></div>
+
+<script>
+
+function cierre(resp){
+  document.getElementById('cBtn-si').disabled=true;
+  document.getElementById('cBtn-no').disabled=true;
+  const fb = document.getElementById('cierre-fb');
+  fb.style.display='block';
+  if(resp==='si'){
+    document.getElementById('cBtn-si').style.background='var(--grn)';
+    document.getElementById('cBtn-si').style.transform='scale(1.05)';
+    fb.style.color='#86EFAC';
+    fb.textContent='¡Perfecto! En la próxima sesión abres MakeCode y escribes tu primer programa real. 🎉';
+  } else {
+    document.getElementById('cBtn-no').style.borderColor='var(--red)';
+    document.getElementById('cBtn-no').style.color='var(--red)';
+    fb.style.color='#FDB980';
+    fb.textContent='Mentira — ya estás programando. 😄 Nos vemos en la siguiente sesión.';
+  }
+}
+// ── ESTADO GLOBAL ─────────────────────────────────
+let pts = 0;
+const TOTAL = 4 + 6 + 5 + 4 + 4; // qa + cl + proc + quiz + build = 23
+const MAX_PTS = 4*3 + 6*4 + 5*2 + 4*5 + 4*5; // 12+24+10+20+20 = 86
+let answered = {};   // id → {correct:bool, question:str, correctAnswer:str, explanation:str}
+
+function addPts(n){
+  pts += n;
+  document.getElementById('ptsCount').textContent = pts;
+  updateProg();
+}
+function updateProg(){
+  const done = Object.keys(answered).length;
+  document.getElementById('progBar').style.width =
+    Math.min(100, Math.round(done/TOTAL*100)) + '%';
+}
+function disableBtns(container, selector){
+  container.querySelectorAll(selector).forEach(b=>b.disabled=true);
+}
+function showFb(id, ok, txt){
+  const el = document.getElementById(id+'-fb');
+  el.className = 'fb show ' + (ok?'ok':'fail');
+  el.textContent = txt;
+}
+
+// ── DATOS FEEDBACK (también usados en PDF) ────────
+const qaData = {
+  qa1:{q:'El programa del semáforo guardado en su chip es un...',
+    ans:'PROGRAMA',
+    ok:'✓ Correcto. El conjunto de instrucciones guardadas en la máquina es un PROGRAMA.',
+    fail:'✗ No. El conjunto de instrucciones escritas en código y guardadas en la máquina se llama PROGRAMA.'},
+  qa2:{q:'"Avanza 3m, gira 90°, deposita la caja" — cada orden es una...',
+    ans:'INSTRUCCIÓN',
+    ok:'✓ Correcto. Cada orden concreta y exacta que le das a la máquina es una INSTRUCCIÓN.',
+    fail:'✗ No. Cada orden concreta que le das a la máquina es una INSTRUCCIÓN.'},
+  qa3:{q:'Los bloques de colores de MakeCode (el idioma para máquinas) son...',
+    ans:'CÓDIGO',
+    ok:'✓ Correcto. El idioma que entienden las máquinas, como los bloques de MakeCode, es el CÓDIGO.',
+    fail:'✗ No. El idioma que entienden las máquinas — los bloques de MakeCode — es el CÓDIGO.'},
+  qa4:{q:'"Encender verde" del semáforo, "mover brazo" del robot... son...',
+    ans:'FUNCIÓN',
+    ok:'✓ Correcto. Las instrucciones concretas de cada dispositivo se llaman FUNCIONES.',
+    fail:'✗ No. Las instrucciones propias de cada dispositivo (lo que hace su "HAZ") se llaman FUNCIONES.'},
+};
+
+const clData = {
+  ci1:{ans:'haz',q:'"Pon la luz en verde" (semáforo)',
+    ok:'✓ Correcto. Orden directa que se ejecuta siempre → HAZ.',
+    fail:'✗ No. Es una orden directa sin condición ni repetición → HAZ.'},
+  ci2:{ans:'rep',q:'"Repite siempre: verde 30s → ámbar 3s → rojo 30s" (semáforo)',
+    ok:'✓ Correcto. "Repite siempre" = bucle que no para → REPITE.',
+    fail:'✗ No. "Repite siempre" indica que se ejecuta sin parar → REPITE.'},
+  ci3:{ans:'si', q:'"Si es de noche → rojo fijo; si no → ciclo normal" (semáforo)',
+    ok:'✓ Correcto. Hay una condición (noche/día) que decide qué hacer → SI.',
+    fail:'✗ No. La acción depende de una condición (noche o día) → SI.'},
+  ci4:{ans:'haz',q:'"Mueve el brazo a posición inicial" (robot)',
+    ok:'✓ Correcto. Instrucción directa del robot → HAZ.',
+    fail:'✗ No. Es una instrucción directa del dispositivo → HAZ.'},
+  ci5:{ans:'si', q:'"Si sensor detecta caja → cógela; si no → avanza 10cm" (robot)',
+    ok:'✓ Correcto. Lo que hace depende de si detecta caja o no → SI.',
+    fail:'✗ No. La acción depende de si hay caja — es una condición → SI.'},
+  ci6:{ans:'rep',q:'"Repite hasta que no quede zumo: aprieta → comprueba" (exprimidor)',
+    ok:'✓ Correcto. Se repite mientras quede zumo → REPITE (bucle).',
+    fail:'✗ No. Se repite mientras haya zumo — eso es un bucle → REPITE.'},
+};
+
+const qData = {
+  q1:{q:'¿Qué estructura hace que el semáforo no se detenga nunca?',
+    ans:'REPITE',
+    ok:'✓ Correcto. El REPITE es el que mantiene el semáforo funcionando sin parar.',
+    fail:'✗ No. Es el REPITE (siempre) el que hace que no se detenga nunca.'},
+  q2:{q:'Si es de noche, ¿cuántas instrucciones HAZ se ejecutan?',
+    ans:'1 — solo "pon rojo fijo"',
+    ok:'✓ Correcto. De noche solo se ejecuta 1 HAZ: "pon rojo fijo". Las otras 3 son del ciclo de día.',
+    fail:'✗ No. De noche el SI activa solo 1 HAZ: "pon rojo fijo".'},
+  q3:{q:'¿Por qué hay un SI en vez de poner siempre el ciclo verde→ámbar→rojo?',
+    ans:'Porque lo que hace cambia según si es de día o de noche',
+    ok:'✓ Correcto. El SI está porque la acción cambia — es una decisión que hay que tomar.',
+    fail:'✗ No. El SI está porque lo que hace el semáforo cambia según la condición (día/noche).'},
+  q4:{q:'¿Qué pasaría si quitamos el REPITE?',
+    ans:'Haría el ciclo una sola vez y se pararía para siempre',
+    ok:'✓ Correcto. Sin REPITE el programa haría el ciclo una vez y terminaría.',
+    fail:'✗ No. Sin REPITE el programa ejecutaría todo una vez y se pararía.'},
+};
+
+const bpData = {
+  bp1:{ans:'c',q:'La puerta nunca se apaga — ¿qué estructura?',
+    ok:'✓ Correcto. Para que funcione sin parar todo el día → REPITE.',
+    fail:'✗ No. Para que nunca se apague necesitas REPITE — funciona sin parar.'},
+  bp2:{ans:'b',q:'Detectar si alguien se acerca (si sensor → abre; si no → cierra)',
+    ok:'✓ Correcto. La acción depende del sensor → SI.',
+    fail:'✗ No. La acción depende de si hay alguien — es una condición → SI.'},
+  bp3:{ans:'a',q:'"Activa el motor y desliza la puerta" — ¿qué tipo de instrucción?',
+    ok:'✓ Correcto. Instrucción directa del dispositivo (función) → HAZ.',
+    fail:'✗ No. Actuar sobre el motor es una instrucción directa del dispositivo → HAZ.'},
+  bp4:{ans:'b',q:'¿Qué estructura añade la función de apertura por incendio?',
+    ok:'✓ Correcto. La acción depende de si hay humo — es una condición → SI.',
+    fail:'✗ No. La acción depende del sensor de humo (hay fuego o no) — eso es una condición → SI.'},
+};
+
+// ── PROCESO: COLOCAR TARJETAS ─────────────────────
+const procItems = [
+  {id:'pc1', step:1, text:'Quiero que el semáforo funcione solo, cambiando las luces sin que nadie lo controle. De noche, solo rojo fijo para ahorrar energía.'},
+  {id:'pc2', step:2, text:'REPITE siempre: SI es de día → HAZ: verde 30s · HAZ: ámbar 3s · HAZ: rojo 30s. SI es de noche → HAZ: rojo fijo.'},
+  {id:'pc3', step:3, text:'Con el plan claro, se traduce todo a bloques en el editor. Es la parte de escribir el código.'},
+  {id:'pc4', step:4, text:'Se ejecuta el programa y se observa: ¿cambia de verde a rojo? ¿funciona de noche? ¿los tiempos son correctos?'},
+  {id:'pc5', step:5, text:'El tiempo de verde era demasiado corto. Se corrige a 30s y se vuelve a ejecutar hasta que funciona bien.'},
+];
+
+let selProcCard = null;
+const procAnswered = {};
+
+function initProc(){
+  const shuffled = [...procItems].sort(()=>Math.random()-.5);
+  const pool = document.getElementById('proc-cards');
+  shuffled.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'proc-card';
+    div.id = item.id;
+    div.dataset.step = item.step;
+    div.textContent = item.text;
+    div.onclick = ()=>selectProcCard(div);
+    pool.appendChild(div);
+  });
+}
+
+function selectProcCard(el){
+  if(el.classList.contains('pc-used')) return;
+  document.querySelectorAll('.proc-card.pc-selected').forEach(c=>c.classList.remove('pc-selected'));
+  if(selProcCard===el){ selProcCard=null; return; }
+  selProcCard=el;
+  el.classList.add('pc-selected');
+}
+
+function placeProc(slotNum){
+  if(!selProcCard) return;
+  const slot = document.getElementById('ps-'+slotNum);
+  if(slot.classList.contains('ps-locked')||slot.classList.contains('ps-filled')) return;
+
+  const cardStep = parseInt(selProcCard.dataset.step);
+  const id = 'proc-'+slotNum;
+  if(procAnswered[id]) return;
+
+  const content = document.getElementById('ps-'+slotNum+'-content');
+  const labels = ['PROBLEMA','PLANIFICA','ESCRIBE','PRUEBA','MEJORA'];
+
+  if(cardStep===slotNum){
+    // correcto — bloquear slot y marcar tarjeta
+    procAnswered[id] = true;
+    answered[id]={correct:true,
+      q:`Paso ${slotNum} — ${labels[slotNum-1]}`,
+      ans:selProcCard.textContent,
+      ok:'Correcto — esta descripción corresponde a este paso.',
+      fail:''};
+    slot.classList.add('ps-correct','ps-filled','ps-locked');
+    content.textContent = selProcCard.textContent;
+    content.style.display='block';
+    selProcCard.classList.add('pc-used');
+    selProcCard.classList.remove('pc-selected');
+    selProcCard=null;
+    addPts(2);
+    const done = Object.keys(procAnswered).length;
+    if(done===5){
+      const fb=document.getElementById('proc-fb');
+      fb.className='fb show ok';
+      fb.textContent='✓ ¡Perfecto! Ya tienes el proceso completo. Ahora lee el programa que generó.';
+    }
+  } else {
+    // incorrecto — sacudir pero NO bloquear; el alumno puede reintentar
+    slot.classList.add('ps-wrong');
+    setTimeout(()=>slot.classList.remove('ps-wrong'), 500);
+    selProcCard.classList.remove('pc-selected');
+    selProcCard=null;
+    const fb=document.getElementById('proc-fb');
+    fb.className='fb show fail';
+    fb.textContent='✗ No es ahí — esa descripción no pertenece a ese paso. Selecciona otra tarjeta e inténtalo de nuevo.';
+  }
+}
+
+// ── TIPO A: ¿CÓMO SE LLAMA? ───────────────────────
+function qa(btn, itemId, correct){
+  if(answered[itemId]) return;
+  const d = qaData[itemId];
+  const item = document.getElementById(itemId);
+  disableBtns(item, '.qa-btn');
+  const chosen = btn.textContent.trim();
+  const ok = chosen === correct;
+  if(ok){
+    btn.classList.add('qa-c');
+    answered[itemId]={correct:true, ...d};
+    addPts(3);
+    showFb(itemId, true, d.ok);
+  } else {
+    btn.classList.add('qa-w');
+    item.querySelectorAll('.qa-btn').forEach(b=>{
+      if(b.textContent.trim()===correct) b.classList.add('qa-rv');
+    });
+    answered[itemId]={correct:false, ...d};
+    showFb(itemId, false, d.fail);
+    updateProg();
+  }
+}
+
+// ── TIPO B: CLASIFICAR ────────────────────────────
+function classify(btn, itemId, correct){
+  if(answered[itemId]) return;
+  const d = clData[itemId];
+  const item = document.getElementById(itemId);
+  disableBtns(item, '.cl-btn');
+  const chosen = btn.classList.contains('haz')?'haz':btn.classList.contains('si')?'si':'rep';
+  const ok = chosen === correct;
+  if(ok){
+    btn.classList.add('c-sel');
+    answered[itemId]={correct:true, ...d};
+    addPts(4);
+    showFb(itemId, true, d.ok);
+  } else {
+    btn.classList.add('w-sel');
+    item.querySelectorAll('.cl-btn').forEach(b=>{
+      if(b.classList.contains(correct)) b.classList.add('reveal');
+    });
+    answered[itemId]={correct:false, ...d};
+    showFb(itemId, false, d.fail);
+    updateProg();
+  }
+}
+
+// ── TIPO C: QUIZ ANALIZAR ─────────────────────────
+function quiz(btn, result, id){
+  if(answered[id]) return;
+  const d = qData[id];
+  const sibs = btn.parentElement.querySelectorAll('.opt');
+  sibs.forEach(b=>b.disabled=true);
+  const ok = result==='correct';
+  if(ok){
+    btn.classList.add('correct');
+    answered[id]={correct:true, ...d};
+    addPts(5);
+    showFb(id, true, d.ok);
+  } else {
+    btn.classList.add('wrong');
+    sibs.forEach(b=>{
+      if(b.onclick.toString().includes("'correct'")) b.classList.add('correct');
+    });
+    answered[id]={correct:false, ...d};
+    showFb(id, false, d.fail);
+    updateProg();
+  }
+}
+
+// ── TIPO D: CONSTRUIR ─────────────────────────────
+function build(btn, stepId, chosen){
+  if(answered[stepId]) return;
+  const d = bpData[stepId];
+  const step = document.getElementById(stepId);
+  const allBtns = step.querySelectorAll('.bs-opt');
+  allBtns.forEach(b=>b.disabled=true);
+  const ok = chosen === d.ans;
+  if(ok){
+    btn.classList.add('bs-c');
+    answered[stepId]={correct:true, ...d};
+    addPts(5);
+    showFb(stepId, true, d.ok);
+  } else {
+    btn.classList.add('bs-w');
+    const idx = ['a','b','c'].indexOf(d.ans);
+    allBtns[idx].classList.add('bs-rv');
+    answered[stepId]={correct:false, ...d};
+    showFb(stepId, false, d.fail);
+    updateProg();
+  }
+}
+
+
+// ── RESULTADO FINAL ───────────────────────────────
+function showResult(){
+  const box = document.getElementById('resultBox');
+  document.getElementById('rPts').textContent = pts+' pts';
+  document.getElementById('rMax').textContent = 'de '+MAX_PTS+' puntos posibles';
+  const pct = Math.round(pts/MAX_PTS*100);
+  let msg='', det='';
+  if(pct>=85){
+    msg='🏆 ¡Excelente! Tienes muy claro cómo funciona la programación.';
+    det='// En la próxima sesión empezamos a programar de verdad.';
+  } else if(pct>=60){
+    msg='✅ Bien hecho. Los conceptos principales están claros.';
+    det='// Guarda tus apuntes y repasa lo que has fallado.';
+  } else if(pct>=35){
+    msg='📖 Vas por buen camino, pero hay cosas que consolidar.';
+    det='// Descarga tus apuntes — tienen exactamente lo que necesitas repasar.';
+  } else {
+    msg='💪 Necesitas repasar la sesión de hoy.';
+    det='// Guarda tus apuntes y pregunta a tu profe lo que no haya quedado claro.';
+  }
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('rDet').textContent = det;
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+// ── EXPORTAR PDF — MIS APUNTES COMPLETOS ─────────
+function printErrors(){
+  const groups = {
+    'Bloque 1 — ¿Qué es programar?':    ['qa1','qa2','qa3','qa4'],
+    'Bloque 2 — HAZ · SI · REPITE':     ['ci1','ci2','ci3','ci4','ci5','ci6'],
+    'Bloque 3 — Analizar un programa':  ['q1','q2','q3','q4'],
+    'Bloque 4 — Construir un programa': ['bp1','bp2','bp3','bp4'],
+  };
+
+  const tick = '✅'; const cross = '❌';
+
+  let out = `
+    <div class="pz-header">
+      <div class="pz-title">📊 Mis resultados — Sesión 1</div>
+      <div class="pz-sub">Tecnología y Digitalización · 2º ESO · Introducción a la programación</div>
+    </div>
+
+    <div class="pz-intro">
+      Aquí tienes todas las preguntas de la actividad con la respuesta correcta y una explicación.
+      Lo que has <strong>acertado</strong> aparece con ✅ y lo que has <strong>fallado</strong> con ❌ — úsalo para repasar.
+    </div>`;
+
+  // ── Apuntes teóricos siempre primero
+  out += `
+    <div class="pz-section">
+      <div class="pz-sec-title">📌 Lo que tienes que saber</div>
+      <div class="pz-error">
+        <div class="pz-q">Las 4 palabras clave</div>
+        <div class="pz-explain">
+          <strong>INSTRUCCIÓN</strong> — una orden concreta y exacta para la máquina. No puede ser vaga.<br>
+          <strong>CÓDIGO</strong> — la forma de escribir instrucciones que entiende la máquina (bloques, Python...).<br>
+          <strong>PROGRAMA</strong> — todas las instrucciones guardadas en la máquina, listas para ejecutarse.<br>
+          <strong>FUNCIÓN</strong> — cada máquina tiene sus propias acciones: mover brazo, encender LED, reproducir sonido...
+        </div>
+      </div>
+      <div class="pz-error">
+        <div class="pz-q">Las 3 estructuras de cualquier programa</div>
+        <div class="pz-explain">
+          <strong>HAZ</strong> — instrucción directa que se ejecuta siempre, en orden (secuencia).<br>
+          <strong>SI</strong> — depende de una condición: si se cumple → haz A; si no → haz B (condicional).<br>
+          <strong>REPITE</strong> — repite un bloque de instrucciones sin parar (bucle).
+        </div>
+      </div>
+      <div class="pz-error">
+        <div class="pz-q">El proceso de programar (como una receta de cocina)</div>
+        <div class="pz-explain">
+          1. PROBLEMA — ¿qué quiero que haga?<br>
+          2. PLANIFICA — escribe los pasos en orden<br>
+          3. ESCRIBE — tradúcelo al editor (bloques, código...)<br>
+          4. PRUEBA — ejecútalo y observa qué pasa<br>
+          5. MEJORA — corrige los errores y vuelve a probar
+        </div>
+      </div>
+    </div>`;
+
+  // ── Preguntas por bloque: todas, con icono correcto/fallado
+  for(const [groupName, ids] of Object.entries(groups)){
+    out += `<div class="pz-section"><div class="pz-sec-title">${groupName}</div>`;
+    for(const id of ids){
+      const data = answered[id];
+      if(!data){ // no contestada
+        out += `<div class="pz-error" style="opacity:.55;">
+          <div class="pz-q">— Sin contestar</div>
+        </div>`;
+        continue;
+      }
+      const icon = data.correct ? tick : cross;
+      const borderColor = data.correct ? '#86EFAC' : '#FDB980';
+      out += `<div class="pz-error" style="border-color:${borderColor};">
+        <div class="pz-q">${icon} ${data.q}</div>
+        <div class="pz-correct">Respuesta correcta: ${data.ans}</div>
+        <div class="pz-explain">${data.correct ? data.ok.replace(/^✓ Correcto\. /,'').replace(/^✓ Exacto\. /,'').replace(/^✓ Bien\. /,'').replace(/^✓ Perfecto\. /,'') : data.fail.replace(/^✗ No\. /,'')}</div>
+      </div>`;
+    }
+    out += `</div>`;
+  }
+
+  out += `<div class="pz-footer">Tecnología y Digitalización 2º ESO · IES Son Pacs · Sesión 1</div>`;
+
+  document.getElementById('print-zone').innerHTML = out;
+  window.print();
+}
+
+// ── INIT ──────────────────────────────────────────
+initProc();
+</script>
+</body>
+</html>
